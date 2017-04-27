@@ -114,6 +114,9 @@ local function attach_routes(routes)
       methods[method_name] = parse_params(wrapped_handler)
     end
 
+    print("route_path: ", route_path)
+    local inspect = require "inspect"
+    print(inspect(methods))
     app:match(route_path, route_path, app_helpers.respond_to(methods))
   end
 end

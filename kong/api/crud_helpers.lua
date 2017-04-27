@@ -24,7 +24,7 @@ function _M.find_by_id_or_field(dao, filter, value, alternate_field)
     return nil, err
   end
 
-  if is_uuid and not next(rows) then
+  if is_uuid and #rows == 0 then
     -- it's a uuid, but yielded no results, so retry with the alternate field
     filter.id = nil
     filter[alternate_field] = value

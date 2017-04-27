@@ -119,8 +119,10 @@ return {
 
   ["/upstreams/:name_or_id/targets/active"] = {
     before = function(self, dao_factory, helpers)
+      print("FIND_UPSTREAM")
       crud.find_upstream_by_name_or_id(self, dao_factory, helpers)
       self.params.upstream_id = self.upstream.id
+      print("upstream_id: ", self.upstream.id)
     end,
 
     GET = function(self, dao_factory)
@@ -129,6 +131,8 @@ return {
       local target_history, err = dao_factory.targets:find_all({
         upstream_id = self.params.upstream_id,
       })
+      local inspect = require "inspect"
+      print("target_history: ", inspect(target_history))
       if not target_history then
         return app_helpers.yield_error(err)
       end

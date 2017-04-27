@@ -29,7 +29,7 @@ describe("Admin API", function()
   
   after_each(function()
     if client then client:close() end
-    helpers.stop_kong()
+    helpers.stop_kong(nil, true)
   end)
 
   describe("/upstreams/{upstream}/targets/", function()
@@ -266,7 +266,7 @@ describe("Admin API", function()
     end)
   end)
 
-  describe("/upstreams/{upstream}/targets/active/", function()
+  describe("#o /upstreams/{upstream}/targets/active/", function()
     describe("GET", function()
       local upstream_name3 = "example.com"
       local apis = {}
@@ -302,8 +302,10 @@ describe("Admin API", function()
       it("only shows active targets", function()
         local res = assert(client:send {
           method = "GET",
-          path = "/upstreams/" .. upstream_name3 .. "/targets/active/",
+          path = "/upstreams/" .. upstream_name3 .. "/targets/active",
         })
+        local inspect = require "inspect"
+        print(inspect(res))
         assert.response(res).has.status(200)
         local json = assert.response(res).has.jsonbody()
 
@@ -322,7 +324,7 @@ describe("Admin API", function()
     end)
   end)
 
-  describe("/upstreams/{upstream}/targets/{target}", function()
+  describe("#o /upstreams/{upstream}/targets/{target}", function()
     describe("DELETE", function()
       local target
       local upstream_name4 = "example4.com"
@@ -364,8 +366,10 @@ describe("Admin API", function()
 
         local active = assert(client:send {
           method = "GET",
-          path = "/upstreams/" .. upstream_name4 .. "/targets/active/",
+          path = "/upstreams/" .. upstream_name4 .. "/targets/active",
         })
+        local inspect = require "inspect"
+        print(inspect(active))
         assert.response(active).has.status(200)
         json = assert.response(active).has.jsonbody()
         assert.equal(1, #json.data)
@@ -391,8 +395,10 @@ describe("Admin API", function()
 
         local active = assert(client:send {
           method = "GET",
-          path = "/upstreams/" .. upstream_name4 .. "/targets/active/",
+          path = "/upstreams/" .. upstream_name4 .. "/targets/active",
         })
+        local inspect = require "inspect"
+        print(inspect(active))
         assert.response(active).has.status(200)
         json = assert.response(active).has.jsonbody()
         assert.equal(1, #json.data)
