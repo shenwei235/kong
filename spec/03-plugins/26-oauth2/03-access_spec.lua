@@ -1512,7 +1512,7 @@ describe("Plugin: oauth2 (access)", function()
       local body = assert.res_status(200, res)
       assert.is_table(ngx.re.match(body, [[^\{"refresh_token":"[\w]{32,32}","token_type":"bearer","state":"wot","access_token":"[\w]{32,32}","expires_in":5\}$]]))
     end)
-    it("#only fails when the client used for the code is not the same clien used for the token", function()
+    it("fails when the client used for the code is not the same client used for the token", function()
       local code = provision_code(nil, nil, "clientid333")
 
       local res = assert(proxy_ssl_client:send {
